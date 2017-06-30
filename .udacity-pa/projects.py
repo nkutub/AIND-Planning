@@ -15,4 +15,4 @@ def submit(args):
 
   udacity.submit(nanodegree, projects[0], filenames, 
                  environment = args.environment,
-                 jwt_path = args.jwt_path)
+                 jwt_path = '/Users/naderk/Documents/Projects/AIND-planning/.udacity-pa/jwt')
