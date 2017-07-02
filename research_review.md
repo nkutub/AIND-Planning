@@ -1,50 +1,64 @@
-# Planning Non-heuristic Search Results for Cargo Problem 
+# Research Review
 
-All three of the cargo planning problems were attempted to be solved using the following non-heuristic search methods: 
+Many experts say that we are currently experiencing an *Ai Renaissance* 
+with a lot of monay and focus in many business are trying to harness the power of 
+computing in new and more intelegent ways. 
 
-* breadth_first_search - type 1
-* depth_first_graph_search - type 3
-* uniform_cost_search - type 5
+Large planning problems are a common challenge for business and a key area where Ai practitionars 
+have made significant progress.
+The following are three big advances in *classical planning* which I have selected to highlight from the 
+book *Artificial Intelligence: A Modern Approach* by Norvig and Russell.
 
-### Metric summary
-Problem # | Search Type  | Length  | Time   | Expansions | Goal Tests | New Nodes
-:------:  | :------:      | :------: | ------:| ------:    | ------:    | ------: 
- 1 | 1 | 6 | .33 sec| 43 | 56 | 180 
- 1 | 3 | 12 | .01 sec | 12 | 13 | 48
- 1 | 5 | 6 | .04 sec | 55 | 57 | 224
- 2 | 1 | 9 | 13.09 sec| 3343 | 4609 | 30509 
- 2 | 3 | 575 | 2.89 sec | 582 | 583 | 5211
- 2 | 5 | 9 | 11.25 sec | 4852 | 4854 | 44030
- 3 | 1 | 12 | 98.91 sec| 14663 | 18098 | 129631 
- 3 | 3 | 596 | 3.21 sec | 627 | 628 | 5176
- 3 | 5 | 12 | 50.17 sec | 18235 | 18237 | 159716
+### Defining the Problem
+Modeling or definging the problem is the very first and key step that needs
+to be completed before a planning problem can be solved by Ai. The deficulty arrises when 
+we try to take the real world with all of its compleixty and try to boil in down to 
+logical statments which can be used in algorythms to interate over what is called that state space.
 
-### Optimal result summary
-Action # | Problem 1 | Problem 2 | Problem 3
- :------:  | :------  | :------ | :------  
-1 | Load(C1, P1, SFO) | Load(C2, P2, JFK)     | Load(C2, P2, JFK)
-2 | Load(C2, P2, JFK) | Load(C1, P1, SFO)     | Load(C1, P1, SFO)
-3 | Fly(P1, SFO, JFK) | Load(C3, P3, ATL)     | Fly(P2, JFK, ORD)
-4 | Fly(P2, JFK, SFO) | Fly(P2, JFK, SFO)     | Load(C4, P2, ORD)
-5 | Unload(C1, P1, JFK) | Unload(C2, P2, SFO) | Fly(P1, SFO, ATL)
-6 | Unload(C2, P2, SFO) | Fly(P1, SFO, JFK)   | Load(C3, P1, ATL)
-7 |                     | Unload(C1, P1, JFK) | Fly(P1, ATL, JFK)
-8 |                     | Fly(P3, ATL, SFO)   | Unload(C1, P1, JFK)
-9 |                     | Unload(C3, P3, SFO) | Unload(C3, P1, JFK)
-10 |                    |                     | Fly(P2, ORD, SFO)
-11 |                    |                     | Unload(C2, P2, SFO)
-12 |                    |                     | Unload(C4, P2, SFO)
+According to Norvig and Russell, STRIPS was the very first major planning system which 
+used a representation language and set the stage for what is now __PDDL__. 
 
+>*Problem Domain Description Language or PDDL (Ghallab et al., 1998), 
+was introduced as a computer-parsable, standardized synatx for rpresenting
+planning problems and has been used s the standard language for the 
+International Planning Competition since 1998. - Norvig and Russell. - Artificial Intelligence: A Modern Approach*
+
+PDDL made modleing the problems simpler by employing two key concepts:
+* __Database Semantic:__ assumes if it is not mentioned than it is considered false
+* __Action Schemas:__ gives a structured way to define the preconditions and effents of actions.
+
+### A Better Way to Search For a Plan - HSP
+Probubly the biggiest hurtl to overcome in solving planning problems is the complexity of the search
+which leads to large time and space requriements which ultimatly render many solutions impractical.
+Early on, this difficulty drove a loss in interest in state-space planning. Interst was revitalized by the introduction
+of __Hueristic Search Plnannung (HSP)__. 
+
+> *"Bont and Geffner's Hueristic Search Planning (HSP) and its later derivatives
+ (Bont and Geffner, 1999; Haslum et al., 2005; Haslum, 2006) were the first to make 
+ state-space search practical for large planning problems." - Norvig and Russell. - Artificial Intelligence: A Modern Approach*
 
 
-### Result Analysis
+Unfortunatily, derving good hueristics for the problem is key for HSP to be succesful and was soon
+discovered that there are some limitiations with deriving good heuristics. 
 
-Here some interesting observations: 
-* breadth_first_search and uniform_cost_search returned optimal result
-* depth_first_graph_search consistently returned not optimal result
-* I was able to search and find solution for all three problems running on my mac within reasonable time
-* There was a significant jump in time taken with very small increases in size of problem 
-* Although some searches returned is faster time, they did not always yield the optimal results
-* I tried some other non-heuristic searches which did not yield a result in reasonable time
-* It makes sense that BFS would be more optimal than DFS since BFS test bad path and good path early vs going deep into a bad path if it was the first one selected
+> *Hoffmann et al. (2006) shows some limiations of abstraction for classivcal planning problems. - 
+Norvig and Russell. - Artificial Intelligence: A Modern Approach*
+
+### A Better Way to Build a Heuristic - GRAPHPLAN
+Even though there was promissing results comming out of the HSP implimentations of search,
+there were deficulty in determining good hueristics for different types of planning problems.
+This was the case until Avrim Blum and Marerric Furst introduced the idea of __GRAPHPLAN__. 
+
+> *"Avrim Blum and Maerrick Furst (1995,1997) revitalized the field 
+of planning with thier GRAPHPLAN system, which was orders 
+of magnitude faster than the partial order planning" - Artificial Intelligence: A Modern Approach*
+
+Many different derived works of the GRAPHPLAN help derive heuristics used to 
+guide search in many large plroblems.
+
+### Conclusion
+Without advances in defining the problem, improving the speed of the search and finally the advances in 
+hardware performance, much of the work in classical planning would be purly academic with no practical use. 
+It was these three breakthroughs in combination others not mentioned here 
+that added to much of what we are now seeing in the *Ai Renaissance* of today.
 
